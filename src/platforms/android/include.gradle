@@ -1,0 +1,16 @@
+android {
+	productFlavors {
+		"nativescript-downloader" {
+			dimension "nativescript-downloader"
+		}
+	}
+}
+repositories {
+maven {
+            url 'https://maven.google.com'
+        }
+}
+dependencies {
+    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.tonyodev.fetch:fetch:1.1.4'
+}
