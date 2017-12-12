@@ -1,40 +1,56 @@
-# Your Plugin Name
+# NativeScript Downloader
 
-Add your plugin badges here. See [nativescript-urlhandler](https://github.com/hypery2k/nativescript-urlhandler) for example.
-
-Then describe what's the purpose of your plugin. 
-
-In case you develop UI plugin, this is where you can add some screenshots.
-
-## (Optional) Prerequisites / Requirements
-
-Describe the prerequisites that the user need to have installed before using your plugin. See [nativescript-firebase plugin](https://github.com/eddyverbruggen/nativescript-plugin-firebase) for example.
+[![npm](https://img.shields.io/npm/v/nativescript-downloader.svg)](https://www.npmjs.com/package/nativescript-downloader)
+[![npm](https://img.shields.io/npm/dt/nativescript-downloader.svg?label=npm%20downloads)](https://www.npmjs.com/package/nativescript-downloader)
+[![Build Status](https://travis-ci.org//triniwiz/nativescript-downlaoder.svg?branch=master)](https://travis-ci.org/triniwiz/nativescript-downloader)
 
 ## Installation
 
-Describe your plugin installation steps. Ideally it would be something like:
-
-```javascript
-tns plugin add <your-plugin-name>
+```bash
+tns plugin add nativescript-downloader
 ```
 
-## Usage 
+## Usage
 
-Describe any usage specifics for your plugin. Give examples for Android, iOS, Angular if needed. See [nativescript-drop-down](https://www.npmjs.com/package/nativescript-drop-down) for example.
-	
-	```javascript
-    Usage code snippets here
-    ```)
+```ts
+import { Downloader } from 'nativescript-downloader';
+const downloader = new Downloader();
+const imageDownloaderId = downloadManager.createDownload({
+      url:
+        'https://wallpaperscraft.com/image/hulk_wolverine_x_men_marvel_comics_art_99032_3840x2400.jpg'
+    });
 
-## API
+downloadManager
+      .start(imageDownloaderId, (progressData: ProgressEventData) => {
+        console.log(`Progress : ${progressData.value}%`);
+      })
+      .then((completed: DownloadEventData) => {
+        console.log(`Image : ${completed.path}`);
+      })
+      .catch(error => {
+        console.log(error.message);
+      });
 
-Describe your plugin methods and properties here. See [nativescript-feedback](https://github.com/EddyVerbruggen/nativescript-feedback) for example.
-    
-| Property | Default | Description |
-| --- | --- | --- |
-| some property | property default value | property description, default values, etc.. |
-| another property | property default value | property description, default values, etc.. |
-    
-## License
+```
 
-Apache License Version 2.0, January 2004
+## Api
+
+| Method             | Default | Type    | Description                                                 |
+| ------------------ | ------- | ------- | ----------------------------------------------------------- |
+| createDownload(options: DownloadOptions)|   | `string`    | Creates a download task it returns the id of the task|
+| getStatus(id: string)            |         | `StatusCode`    | Gets the status of a download task.            |
+| start(id: string, progress?: Function) | | `Promise<DownloadEventData>`    | Starts a download task.|
+| retry(id: string)          |         | `void`    | Retries a download task. |
+| resume(id: string)       |   | `void` | Resumes a download task. |
+| cancel(id: string) |         | `void`    | Cancels a download task. |
+| pause(id: string) |         | `void`    | Pauses a download task. |
+| getPath(id: string) |         | `void`    | Return the path of a download task. |
+## Example Image
+
+| IOS                                     | Android                                     |
+| --------------------------------------- | ------------------------------------------- |
+| ![IOS](https://i.imgur.com/WQqhhXF.gif) | *Coming Soon* |
+
+# TODO
+
+* [ ] Local Notifications

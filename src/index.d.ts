@@ -1,5 +1,4 @@
 import { DownloaderBase } from './downloader.common';
-export { DownloadOptions, StatusCode, DownloadEventData };
 export const PROGRESS_EVENT = 'progress';
 export const STATUS_EVENT = 'status';
 export declare class Downloader extends DownloaderBase {
