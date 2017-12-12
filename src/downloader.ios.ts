@@ -1,13 +1,14 @@
-import { DownloaderBase } from './downloader.common';
 import {
+  DownloaderBase,
   DownloadOptions,
   DownloadEventData,
   StatusCode,
   ProgressEventData
-} from '.';
+} from './downloader.common';
 import * as fs from 'tns-core-modules/file-system';
 import { fromObject } from 'tns-core-modules/data/observable/observable';
 const main_queue = dispatch_get_current_queue();
+
 export class Downloader extends DownloaderBase {
   ios: AFURLSessionManager;
   constructor() {

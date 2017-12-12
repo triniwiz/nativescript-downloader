@@ -1,5 +1,4 @@
 import { Observable } from 'tns-core-modules/data/observable';
-import { DownloadOptions, DownloadEventData, StatusCode } from '.';
 export abstract class DownloaderBase extends Observable {
   downloads: Map<String, any>;
   downloadsData: Map<String, any>;
@@ -33,4 +32,34 @@ export abstract class DownloaderBase extends Observable {
   }
   public abstract getStatus(id: string): StatusCode;
   public abstract getPath(id: string): string;
+}
+
+export interface DownloadEventError {
+  status: string;
+  message: string;
+}
+
+export interface DownloadEventData {
+  status: string;
+  path: string;
+  message: string;
+}
+export interface ProgressEventData {
+  value: number;
+}
+
+export enum StatusCode {
+  PENDING = 'pending',
+  PAUSED = 'paused',
+  DOWNLOADING = 'downloading',
+  COMPLETED = 'completed',
+  ERROR = 'error'
+}
+
+export interface DownloadOptions {
+  url: string;
+  query?: Object | string;
+  headers?: Object;
+  path?: string;
+  fileName?: string;
 }

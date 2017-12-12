@@ -1,12 +1,10 @@
-import { DownloaderBase } from './downloader.common';
 import {
-  PROGRESS_EVENT,
+  DownloaderBase,
   DownloadOptions,
-  STATUS_EVENT,
   StatusCode,
   ProgressEventData,
   DownloadEventData
-} from '.';
+} from './downloader.common';
 import * as app from 'tns-core-modules/application';
 import { fromObject } from 'tns-core-modules/data/observable';
 import * as fs from 'tns-core-modules/file-system';
