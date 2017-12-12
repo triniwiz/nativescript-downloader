@@ -28,14 +28,16 @@ export class Downloader extends DownloaderBase {
     );
 
     let path = '';
-    if (!options.path) {
+    if (options.path && options.fileName) {
+      path = fs.path.join(options.path, options.fileName);
+    } else if (!options.path && options.fileName) {
+      path = fs.path.join(fs.knownFolders.temp().path, options.fileName);
+    } else if (options.path && !options.fileName) {
+      path = fs.path.join(options.path, `${this.generateId()}`);
+    } else {
       path = fs.path.join(fs.knownFolders.temp().path, `${this.generateId()}`);
-    } else if (options.path.startsWith('~/')) {
-      path = fs.path.join(
-        fs.knownFolders.currentApp().path,
-        options.path.replace('~/', '')
-      );
     }
+
     const ref = new WeakRef(this);
     const task = download.downloadTaskWithRequestProgressDestinationCompletionHandler(
       request,
