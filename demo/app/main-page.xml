@@ -1,19 +1,23 @@
 <Page
     xmlns="http://schemas.nativescript.org/tns.xsd" loaded="pageLoaded" class="page"
     xmlns:ui="nativescript-downloader">
-    <StackLayout class="p-20">
-        <StackLayout>
-            <Label text="File Progress"/>
-            <Label text="{{fileProgress}}"/>
+    <ScrollView>
+        <StackLayout class="p-20">
+            <StackLayout>
+                <Label text="File Progress"/>
+                <Label text="{{fileProgress}}"/>
+            </StackLayout>
+            <Progress value="{{fileProgress}}"/>
+            <Label text="Image Progress"/>
+            <Label text="{{imageProgress}}"/>
+            <Progress value="{{imageProgress}}"/>
+            <Image height="40%" src="{{ image }}"/>
+            <Button text="Generate Downloads" tap="{{ generateDownloads }}"/>
+            <Button text="Generate and Start Downloads" tap="{{ generateAndStart }}"/>
+            <Button text="Download Test File" tap="{{ downloadFile }}"/>
+            <Button text="Pause Test File" tap="{{ pauseFile }}"/>
+            <Button text="Resume Test File" tap="{{ resumeFile }}"/>
+            <Button text="Download Image" tap="{{ downloadImage }}"/>
         </StackLayout>
-        <Progress value="{{fileProgress}}"/>
-        <Label text="Image Progress"/>
-        <Label text="{{imageProgress}}"/>
-        <Progress value="{{imageProgress}}"/>
-        <Image height="40%" src="{{ image }}"/>
-        <Button text="Download Test File" tap="{{ downloadFile }}"/>
-        <Button text="Pause Test File" tap="{{ pauseFile }}"/>
-        <Button text="Resume Test File" tap="{{ resumeFile }}"/>
-        <Button text="Download Image" tap="{{ downloadImage }}"/>
-    </StackLayout>
+    </ScrollView>
 </Page>

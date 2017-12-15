@@ -12,22 +12,29 @@ export class HelloWorldModel extends Observable {
   imageDownloaderId: string;
   constructor() {
     super();
+  }
+
+  generateDownloads() {
     this.downloadManager = new Downloader();
     this.set('fileProgress', 0);
     this.set('imageProgress', 0);
 
-    setTimeout(() => {
-      this.imageDownloaderId = this.downloadManager.createDownload({
-        url:
-          'https://wallpaperscraft.com/image/hulk_wolverine_x_men_marvel_comics_art_99032_3840x2400.jpg'
-      });
-      console.log(`Image Id :${this.imageDownloaderId} `);
+    this.imageDownloaderId = this.downloadManager.createDownload({
+      url:
+        'https://wallpaperscraft.com/image/hulk_wolverine_x_men_marvel_comics_art_99032_3840x2400.jpg'
+    });
+    console.log(`Image Id :${this.imageDownloaderId} `);
 
-      this.fileDownloaderId = this.downloadManager.createDownload({
-        url: 'http://ipv4.download.thinkbroadband.com/50MB.zip'
-      });
-      console.log(`File Id :${this.fileDownloaderId} `);
-    }, 3000);
+    this.fileDownloaderId = this.downloadManager.createDownload({
+      url: 'http://ipv4.download.thinkbroadband.com/50MB.zip'
+    });
+    console.log(`File Id :${this.fileDownloaderId} `);
+  }
+
+  generateAndStart() {
+    this.generateDownloads();
+    this.downloadFile();
+    this.downloadImage();
   }
 
   downloadFile() {
