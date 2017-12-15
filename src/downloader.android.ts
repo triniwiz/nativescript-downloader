@@ -3,34 +3,40 @@ import {
   DownloadOptions,
   StatusCode,
   ProgressEventData,
-  DownloadEventData
+  DownloadEventData,
+  generateId,
+  DownloadEventError
 } from './downloader.common';
 import * as app from 'tns-core-modules/application';
 import { fromObject } from 'tns-core-modules/data/observable';
 import * as fs from 'tns-core-modules/file-system';
 import * as utils from 'tns-core-modules/utils/utils';
+import { DownloadsData } from './enums';
 declare const com, co;
 export class Downloader extends DownloaderBase {
   private fetch;
-  downloadsId: Map<String, any>;
+  downloadsData: Map<String, DownloadsData>;
   private manager;
+  private worker: Worker;
+  downloadRequests: Map<any, any>;
+  taskIds: Map<string, string>;
   constructor() {
     super();
     this.downloads = new Map();
     this.downloadsData = new Map();
-    /*
-    Need to use worker;
-    */
+    this.downloadRequests = new Map();
+    this.taskIds = new Map();
   }
   public static init() {
     co.fitcom.fancydownloader.Manager.init(utils.ad.getApplicationContext());
   }
   public createDownload(options: DownloadOptions): string {
     if (options && !options.url) throw new Error('Url missing');
+    const taskId = generateId();
+
     if (!this.manager) {
       this.manager = co.fitcom.fancydownloader.Manager.getInstance();
     }
-    const id = this.generateId();
     let url;
     let query;
     if (options.query) {
@@ -51,7 +57,7 @@ export class Downloader extends DownloaderBase {
     const request = new co.fitcom.fancydownloader.Request(url);
     let path = '';
     if (options.path) {
-      request.setPath(options.path);
+      request.setFilePath(options.path);
     }
     if (options.fileName) {
       request.setFileName(options.fileName);
@@ -64,18 +70,16 @@ export class Downloader extends DownloaderBase {
       }
       request.setHeaders(headers);
     }
+
     const task = this.manager.create(request);
-
     path = fs.path.join(request.getFilePath(), request.getFileName());
-    this.downloads.set(id, task);
-    this.downloadsData.set(id, {
-      status: StatusCode.PENDING,
-      options: options,
-      path: path,
-      request: request
+    this.taskIds.set(task, taskId);
+    this.downloads.set(taskId, task);
+    this.downloadRequests.set(taskId, request);
+    this.downloadsData.set(taskId, {
+      status: StatusCode.PENDING
     });
-
-    return id;
+    return taskId;
   }
 
   public getStatus(id: string): StatusCode {
@@ -87,113 +91,138 @@ export class Downloader extends DownloaderBase {
   }
 
   public start(id: string, progress?: Function): Promise<DownloadEventData> {
-    const ref = new WeakRef(this);
-    return new Promise((_resolve, _reject) => {
-      if (id && this.downloadsData.has(id)) {
+    const ref = new WeakRef(this) as WeakRef<Downloader>;
+    return new Promise((resolve, reject) => {
+      if (id) {
         const data = this.downloadsData.get(id);
         this.downloadsData.set(
           id,
           Object.assign({}, data, {
-            reject: _reject,
-            resolve: _resolve,
+            reject: reject,
+            resolve: resolve,
             callback: progress
           })
         );
-        const downloadId = this.downloads.get(id);
-        const listener = co.fitcom.fancydownloader.DownloadListenerUI.extend({
-          owner: ref.get(),
-          onUIProgress(
-            task: string,
-            currentBytes: number,
-            totalBytes: number,
-            speed: number
-          ) {
-            const current = Math.floor(
-              Math.round(currentBytes / totalBytes * 100)
-            );
-            if (this.owner.downloadsData.has(task)) {
-              const data = this.owner.downloadsData.get(task);
-              if (data) {
-                if (data.status && data.status !== StatusCode.DOWNLOADING) {
-                  this.owner.downloadsData.set(
-                    task,
-                    Object.assign({}, data, {
-                      status: StatusCode.DOWNLOADING
-                    })
+
+        if (this.downloads.has(id)) {
+          const request = this.downloadRequests.get(id);
+          const downloadId = this.downloads.get(id);
+          if (request) {
+            const listener = (co as any).fitcom.fancydownloader.DownloadListenerUI.extend(
+              {
+                onUIProgress(
+                  task: string,
+                  currentBytes: number,
+                  totalBytes: number,
+                  speed: number
+                ) {
+                  const current = Math.floor(
+                    Math.round(currentBytes / totalBytes * 100)
                   );
+
+                  const owner = ref.get();
+                  const _id = owner.taskIds.get(task);
+                  if (owner.downloads.has(_id)) {
+                    const data = owner.downloadsData.get(_id);
+                    const callback = data.callback;
+                    if (data.status !== StatusCode.DOWNLOADING) {
+                      owner.downloadsData.set(
+                        _id,
+                        Object.assign({}, data, {
+                          status: StatusCode.DOWNLOADING
+                        })
+                      );
+                    }
+                    if (callback && typeof callback === 'function') {
+                      callback(<ProgressEventData>{
+                        value: current
+                      });
+                    }
+                  }
+                },
+
+                onUIComplete(task: string) {
+                  const owner = ref.get();
+                  const _id = owner.taskIds.get(task);
+                  if (owner.downloads.has(_id)) {
+                    const data = owner.downloadsData.get(_id);
+                    const resolve = data.resolve;
+                    const _request = owner.downloadRequests.get(_id);
+                    if (resolve) {
+                      resolve(<DownloadEventData>{
+                        status: StatusCode.COMPLETED,
+                        path: fs.path.join(
+                          _request.getFilePath(),
+                          _request.getFileName()
+                        )
+                      });
+                    }
+                  }
+                },
+
+                onUIError(task: string, error: java.lang.Exception) {
+                  const owner = ref.get();
+                  const _id = owner.taskIds.get(task);
+                  if (owner.downloads.has(_id)) {
+                    const data = owner.downloadsData.get(_id);
+                    const reject = data.reject;
+                    const message = error.getLocalizedMessage();
+                    if (reject) {
+                      if (
+                        message.toLowerCase().indexOf('socket closed') === -1
+                      ) {
+                        reject(<DownloadEventError>{
+                          status: StatusCode.ERROR,
+                          message: error.getLocalizedMessage()
+                        });
+                      }
+                    }
+                  }
                 }
               }
-
-              const callback = data.callback;
-              if (callback && typeof callback === 'function') {
-                callback(<ProgressEventData>{ value: current });
-              }
-            }
-          },
-
-          onUIComplete(task: string) {
-            if (this.owner.downloadsData.has(task)) {
-              const data = this.owner.downloadsData.get(task);
-              const resolve = data.resolve;
-              resolve(<DownloadEventData>{
-                status: StatusCode.COMPLETED,
-                message: null,
-                path: fs.path.join(
-                  data.request.getFilePath(),
-                  data.request.getFileName()
-                )
-              });
-            }
-          },
-
-          onUIError(task: string, error: java.lang.Exception) {
-            if (this.owner.downloadsData.has(task)) {
-              const data = this.owner.downloadsData.get(task);
-              const reject = data.reject;
-              reject({
-                status: StatusCode.ERROR,
-                message: error.getLocalizedMessage()
-              });
-            }
+            );
+            request.setListener(new listener());
           }
-        });
-        data.request.setListener(new listener());
-
-        this.manager.start(downloadId);
-      } else {
-        _reject({ message: 'Download ID not found.' });
+          this.manager.start(downloadId);
+        }
       }
     });
   }
 
   public resume(id: string) {
-    if (id && this.downloads.has(id)) {
-      const downloadId = this.downloads.get(id);
-      this.manager.resume(downloadId);
+    if (id) {
+      if (this.downloads.has(id)) {
+        const downloadId = this.downloads.get(id);
+        this.manager.resume(downloadId);
+      }
     }
   }
 
   public cancel(id: string) {
-    if (id && this.downloads.has(id)) {
-      const downloadId = this.downloads.get(id);
-      this.manager.cancel(downloadId);
+    if (id) {
+      if (this.downloads.has(id)) {
+        const downloadId = this.downloads.get(id);
+        this.manager.cancel(downloadId);
+        this.downloads.delete(id);
+        this.downloadsData.delete(id);
+      }
     }
   }
   public pause(id: string) {
-    if (id && this.downloads.has(id)) {
-      const downloadId = this.downloads.get(id);
-      this.manager.pause(downloadId);
-      setTimeout(() => {
+    if (id) {
+      if (this.downloads.has(id)) {
+        const downloadId = this.downloads.get(id);
         const data = this.downloadsData.get(id);
-        if (data) {
+        this.manager.pause(downloadId);
+        setTimeout(() => {
           this.downloadsData.set(
             id,
             Object.assign({}, data, {
               status: StatusCode.PAUSED
             })
           );
-        }
-      }, 10);
+        }, 100);
+      }
     }
   }
   public getPath(id: string): string {

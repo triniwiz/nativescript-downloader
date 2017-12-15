@@ -12,10 +12,11 @@ tns plugin add nativescript-downloader
 
 ## Usage
 
+### TypeScript
 
 ```ts
 import { Downloader } from 'nativescript-downloader';
-Downloader.init() // <= Try calling this after the app launches to start the downloader service
+Downloader.init(); // <= Try calling this after the app launches to start the downloader service
 ```
 
 ```ts
@@ -38,14 +39,40 @@ downloader
   });
 ```
 
+### JavaScript
+
+```js
+var Downloader = require('nativescript-downloader').Downloader;
+Downloader.Downloader.init(); // <= Try calling this after the app launches to start the downloader service
+```
+
+```js
+var Downloader = require('nativescript-downloader').Downloader;
+var downloader = new Downloader();
+var imageDownloaderId = downloadManager.createDownload({
+  url:
+    'https://wallpaperscraft.com/image/hulk_wolverine_x_men_marvel_comics_art_99032_3840x2400.jpg'
+});
+
+downloader
+  .start(imageDownloaderId, progressData => {
+    console.log(`Progress : ${progressData.value}%`);
+  })
+  .then(completed => {
+    console.log(`Image : ${completed.path}`);
+  })
+  .catch(error => {
+    console.log(error.message);
+  });
+```
+
 ## Api
 
 | Method                                   | Default | Type                         | Description                                           |
 | ---------------------------------------- | ------- | ---------------------------- | ----------------------------------------------------- |
 | createDownload(options: DownloadOptions) |         | `string`                     | Creates a download task it returns the id of the task |
 | getStatus(id: string)                    |         | `StatusCode`                 | Gets the status of a download task.                   |
-| start(id: string, progress?: Function)   |         | `Promise<DownloadEventData>` | Starts a download task.                               |
-| retry(id: string)                        |         | `void`                       | Retries a download task.                              |
+| start(id: string, progress?: Function)   |         | `Promise<DownloadEventData>` | Starts a download task.                               |  |
 | resume(id: string)                       |         | `void`                       | Resumes a download task.                              |
 | cancel(id: string)                       |         | `void`                       | Cancels a download task.                              |
 | pause(id: string)                        |         | `void`                       | Pauses a download task.                               |
@@ -53,9 +80,9 @@ downloader
 
 ## Example Image
 
-| IOS                                     | Android       |
-| --------------------------------------- | ------------- |
-| ![IOS](https://i.imgur.com/WQqhhXF.gif) | _Coming Soon_ |
+| IOS                                     | Android                                     |
+| --------------------------------------- | ------------------------------------------- |
+| ![IOS](https://i.imgur.com/WQqhhXF.gif) | ![Android](https://i.imgur.com/fE9rBvl.gif) |
 
 # TODO
 

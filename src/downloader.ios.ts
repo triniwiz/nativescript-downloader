@@ -3,7 +3,8 @@ import {
   DownloadOptions,
   DownloadEventData,
   StatusCode,
-  ProgressEventData
+  ProgressEventData,
+  generateId
 } from './downloader.common';
 import * as fs from 'tns-core-modules/file-system';
 import { fromObject } from 'tns-core-modules/data/observable/observable';
@@ -19,7 +20,7 @@ export class Downloader extends DownloaderBase {
   public static init() {}
   public createDownload(options: DownloadOptions): string {
     if (options && !options.url) throw new Error('Url missing');
-    const id = this.generateId();
+    const id = generateId();
     const configuration = NSURLSessionConfiguration.defaultSessionConfiguration;
     const download = AFURLSessionManager.alloc().initWithSessionConfiguration(
       configuration
@@ -34,9 +35,9 @@ export class Downloader extends DownloaderBase {
     } else if (!options.path && options.fileName) {
       path = fs.path.join(fs.knownFolders.temp().path, options.fileName);
     } else if (options.path && !options.fileName) {
-      path = fs.path.join(options.path, `${this.generateId()}`);
+      path = fs.path.join(options.path, `${generateId()}`);
     } else {
-      path = fs.path.join(fs.knownFolders.temp().path, `${this.generateId()}`);
+      path = fs.path.join(fs.knownFolders.temp().path, `${generateId()}`);
     }
 
     const ref = new WeakRef(this);

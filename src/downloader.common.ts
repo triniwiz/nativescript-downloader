@@ -22,15 +22,16 @@ export abstract class DownloaderBase extends Observable {
   public abstract resume(id: string): void;
   public abstract pause(id: string): void;
   public abstract cancel(id: string): void;
-  public generateId(): string {
-    return 'xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      const r = (Math.random() * 16) | 0,
-        v = c === 'x' ? r : (r & 0x3) | 0x8;
-      return v.toString(16);
-    });
-  }
   public abstract getStatus(id: string): StatusCode;
   public abstract getPath(id: string): string;
+}
+
+export function generateId(): string {
+  return 'xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = (Math.random() * 16) | 0,
+      v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
 }
 
 export interface DownloadEventError {
@@ -41,7 +42,7 @@ export interface DownloadEventError {
 export interface DownloadEventData {
   status: string;
   path: string;
-  message: string;
+  message?: string;
 }
 export interface ProgressEventData {
   value: number;
