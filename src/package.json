@@ -1,6 +1,6 @@
 {
     "name": "nativescript-downloader",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "",
     "main": "downloader",
     "typings": "index.d.ts",

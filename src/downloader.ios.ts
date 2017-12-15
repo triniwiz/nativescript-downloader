@@ -170,15 +170,6 @@ export class Downloader extends DownloaderBase {
     }
   }
 
-  public retry(id: string): void {
-    if (id && this.downloads.has(id)) {
-      const task = this.downloads.get(id);
-      if (task) {
-        task.resume();
-      }
-    }
-  }
-
   public resume(id: string): void {
     if (id && this.downloads.has(id)) {
       const task = this.downloads.get(id);

@@ -19,7 +19,6 @@ export abstract class DownloaderBase extends Observable {
     id: string,
     progress?: Function
   ): Promise<DownloadEventData>;
-  public abstract retry(id: string): void;
   public abstract resume(id: string): void;
   public abstract pause(id: string): void;
   public abstract cancel(id: string): void;

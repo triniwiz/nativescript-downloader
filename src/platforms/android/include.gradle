@@ -6,11 +6,14 @@ android {
 	}
 }
 repositories {
+    maven {
+        url 'https://dl.bintray.com/triniwiz/maven/'
+    }
 maven {
             url 'https://maven.google.com'
         }
 }
-dependencies {
-    compile 'com.android.support:appcompat-v7:26.1.0'
-    compile 'com.tonyodev.fetch:fetch:1.1.4'
+
+dependencies{
+compile 'co.fitcom:fancydownloader:0.0.3'
 }
