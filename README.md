@@ -12,6 +12,12 @@ tns plugin add nativescript-downloader
 
 ## Usage
 
+
+```ts
+import { Downloader } from 'nativescript-downloader';
+Downloader.init() // <= Try calling this after the app launches to start the downloader service
+```
+
 ```ts
 import { Downloader } from 'nativescript-downloader';
 const downloader = new Downloader();
