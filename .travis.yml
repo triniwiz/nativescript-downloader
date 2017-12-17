@@ -21,7 +21,7 @@ matrix:
       env:
          - BuildAndroid="26"
       jdk: oraclejdk8
-      before_install: nvm install stable
+      before_install: nvm install --lts
       script: cd demo && npm run build.plugin && npm i && npm run ns-bundle --android --build-app
     - stage: "Tests"
       os: osx
@@ -39,7 +39,7 @@ matrix:
       env:
          - Android="UnitTests"
       jdk: oraclejdk8
-      before_install: nvm install stable
+      before_install: nvm install --lts
       before_script:
         - echo no | android create avd --force -n test -t android-21 -b armeabi-v7a
         - emulator -avd test -no-audio -no-window &
@@ -53,7 +53,7 @@ matrix:
       language: android
       os: linux
       jdk: oraclejdk8
-      before_install: nvm install stable
+      before_install: nvm install --lts
       script:
         - cd src && npm i && npm run tsc && cd ../demo
         - travis_wait travis_retry tns build android
@@ -76,6 +76,7 @@ android:
     - build-tools-26.0.1
     - android-26
     - android-23
+    - android-21
     - extra-android-m2repository
     - sys-img-armeabi-v7a-android-21
 
