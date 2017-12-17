@@ -11,7 +11,7 @@ matrix:
       env:
         - Platform="IOS 11"
       osx_image: xcode9.1
-      language: node_js 
+      language: node_js
       node_js: "6"
       jdk: oraclejdk8
       script: cd demo && npm run build.plugin && npm i && npm run ns-bundle --ios --build-app --uglify
@@ -22,8 +22,24 @@ matrix:
       jdk: oraclejdk8
       before_install: nvm install 6.10.3
       script: cd demo && npm run build.plugin && npm i && npm run ns-bundle --android --build-app --uglify
+    - stage: "Tests"
+      os: osx
+      env:
+        - Platform="IOS 11"
+      osx_image: xcode9.1
+      language: node_js
+      node_js: "6"
+      jdk: oraclejdk8
+      script: npm i && npm run tsc && npm run tslint && cd ../demo && tns build ios && tns test ios --justlaunch
+    - language: android
+      os: linux
+      env:
+        - Platform="Android 26"
+      jdk: oraclejdk8
+      before_install: nvm install 6.10.3
+      script: npm i && npm run tsc && npm run tslint && cd ../demo && tns build android && tns test android --justlaunch
     - stage: "Build"
-      env: 
+      env:
         - BuildAndroid="26"
       language: android
       os: linux
@@ -32,14 +48,14 @@ matrix:
       script:
         - cd src && npm i && npm run tsc && cd ../demo && tns build android
     - os: osx
-      env: 
+      env:
         - BuildiOS="11"
         - Xcode="9.1"
       osx_image: xcode9.1
-      language: node_js 
+      language: node_js
       node_js: "6"
       jdk: oraclejdk8
-      script: 
+      script:
         - cd src && npm i && npm run tsc && cd ../demo && tns build ios
 
 android:
