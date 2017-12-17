@@ -9,9 +9,8 @@ import {
 import * as fs from 'tns-core-modules/file-system';
 import { fromObject } from 'tns-core-modules/data/observable/observable';
 const main_queue = dispatch_get_current_queue();
-
+declare const AFURLSessionManager, NSURLSessionConfiguration, NSURLRequest;
 export class Downloader extends DownloaderBase {
-  ios: AFURLSessionManager;
   constructor() {
     super();
     this.downloads = new Map();

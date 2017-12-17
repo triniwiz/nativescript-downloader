@@ -7,7 +7,6 @@ import {
   generateId,
   DownloadEventError
 } from './downloader.common';
-import * as app from 'tns-core-modules/application';
 import { fromObject } from 'tns-core-modules/data/observable';
 import * as fs from 'tns-core-modules/file-system';
 import * as utils from 'tns-core-modules/utils/utils';
