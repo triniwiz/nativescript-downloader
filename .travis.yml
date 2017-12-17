@@ -1,4 +1,30 @@
 
+android:
+  components:
+    - tools
+    - platform-tools
+    - build-tools-26.0.1
+    - android-26
+    - android-23
+    - android-21
+    - extra-android-m2repository
+    - sys-img-armeabi-v7a-android-21
+
+install:
+    - echo no | npm install -g nativescript
+    - tns usage-reporting disable
+    - tns error-reporting disable
+    - echo no | npm install -g ios-sim
+
+before_cache:
+    - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+
+cache:
+    directories:
+        - .nvm
+        - $HOME/.gradle/caches/
+        - $HOME/.gradle/wrapper/
+
 matrix:
   include:
     - stage: "Lint"
@@ -9,7 +35,7 @@ matrix:
     - stage: "WebPack"
       os: osx
       env:
-        - BuildiOS="11"
+        - BuildiOS="10.3"
         - Xcode="9.2"
       osx_image: xcode9.2
       language: node_js
@@ -31,10 +57,10 @@ matrix:
       language: node_js
       node_js: "8"
       jdk: oraclejdk8
+      before_script:
+        - ios-sim start --devicetypeid "iPhone-7-Plus, 10.3"
       script:
-        - open -b com.apple.iphonesimulator
-        - cd src && npm i && npm run tsc && npm run tslint && cd ../demo && tns build ios
-        - travis_wait travis_retry tns test ios --justlaunch
+        - cd src && npm i && npm run tsc && npm run tslint && cd ../demo && tns build ios && tns test ios --justlaunch
     - language: android
       os: linux
       env:
@@ -59,7 +85,7 @@ matrix:
         - cd src && npm i && npm run tsc && cd ../demo && tns build android
     - os: osx
       env:
-        - BuildiOS="11"
+        - BuildiOS="10.3"
         - Xcode="9.2"
       osx_image: xcode9.2
       language: node_js
@@ -67,19 +93,3 @@ matrix:
       jdk: oraclejdk8
       script:
         - cd src && npm i && npm run tsc && cd ../demo && tns build ios
-
-android:
-  components:
-    - tools
-    - platform-tools
-    - build-tools-26.0.1
-    - android-26
-    - android-23
-    - android-21
-    - extra-android-m2repository
-    - sys-img-armeabi-v7a-android-21
-
-install:
-    - echo no | npm install -g nativescript
-    - tns usage-reporting disable
-    - tns error-reporting disable
