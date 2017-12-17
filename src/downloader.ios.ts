@@ -25,9 +25,25 @@ export class Downloader extends DownloaderBase {
     const download = AFURLSessionManager.alloc().initWithSessionConfiguration(
       configuration
     );
-    const request = NSURLRequest.requestWithURL(
-      NSURL.URLWithString(options.url)
-    );
+
+    let url;
+    let query;
+    if (options.query) {
+      if (typeof options.query === 'object') {
+        const keysArray = Object.keys(options.query);
+        query = '';
+        for (let key of keysArray) {
+          query += key + '=' + options.query[key] + '&';
+        }
+      } else if (typeof options.query === 'string') {
+        query = options.query;
+      }
+      url = encodeURI(options.url + query);
+    } else {
+      url = options.url;
+    }
+
+    const request = NSURLRequest.requestWithURL(NSURL.URLWithString(url));
 
     let path = '';
     if (options.path && options.fileName) {
