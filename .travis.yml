@@ -19,7 +19,7 @@ matrix:
     - language: android
       os: linux
       env:
-         - BuildAndroid="27"
+         - BuildAndroid="26"
       jdk: oraclejdk8
       before_install: nvm install stable
       script: cd demo && npm run build.plugin && npm i && npm run ns-bundle --android --build-app
@@ -49,7 +49,7 @@ matrix:
         - travis_wait travis_retry tns test android --justlaunch
     - stage: "Build"
       env:
-         - BuildAndroid="27"
+         - BuildAndroid="26"
       language: android
       os: linux
       jdk: oraclejdk8
@@ -73,8 +73,8 @@ android:
   components:
     - tools
     - platform-tools
-    - build-tools-27.0.2
-    - android-27
+    - build-tools-26.0.1
+    - android-26
     - android-23
     - extra-android-m2repository
     - sys-img-armeabi-v7a-android-21
