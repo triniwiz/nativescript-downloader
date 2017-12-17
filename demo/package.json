@@ -40,6 +40,7 @@
     "webpack-sources": "~1.0.1"
   },
   "scripts": {
+    "tsc": "tsc -skipLibCheck",
     "build.plugin": "cd ../src && npm run build",
     "ci.tslint": "npm i && tslint --config '../tslint.json' 'app/**/*.ts' --exclude '**/node_modules/**'",
     "ns-bundle": "ns-bundle",

@@ -10,7 +10,7 @@ var TEST_URL_PROGRESS = 'https://i.imgur.com/fE9rBvl.gif';
 var TEST_URL_ERROR = 'http://ipv4.download.thinkbroadband.com/5 MB.zip';
 var pausedProgress;
 var types = require('tns-core-modules/utils/types');
-describe('download function', () => {
+describe('download function', function(){
   // Needs timeout to simulate a startup similar to initiating on app launch
   it('starts the download service', function(done) {
     var error;
@@ -22,7 +22,7 @@ describe('download function', () => {
       setTimeout(function() {
         expect(error).toBeUndefined();
         done();
-      }, 1500);
+      }, 3000);
     }
   });
 
@@ -55,7 +55,7 @@ describe('download function', () => {
       })
       .then(function(completed) {})
       .catch(function() {
-        fail('Download failed');
+        fail(`Download with progress failed with error message: ${e.message}`);
       });
   });
 
@@ -66,7 +66,7 @@ describe('download function', () => {
         expect(completed.path).toBeDefined();
       })
       .catch(function() {
-        fail('Download failed');
+        fail(`Download with completed path failed with error message: ${e.message}`);
       });
   });
 
@@ -88,8 +88,8 @@ describe('download function', () => {
         }, 2000);
       })
       .then(function(completed) {})
-      .catch(function() {
-        fail('Download failed');
+      .catch(function(e) {
+        fail(`Download with resume failed with error message: ${e.message}`);
       });
   });
 

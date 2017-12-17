@@ -21,7 +21,7 @@ matrix:
         - Platform="Android 26"
       jdk: oraclejdk8
       before_install: nvm install 6.10.3
-      script: cd demo && npm run build.plugin && npm i && npm run ns-bundle --android --build-app --uglify
+      script: cd demo && npm run build.plugin && npm i && npm run ns-bundle --android --build-app
     - stage: "Tests"
       os: osx
       env:
@@ -30,14 +30,14 @@ matrix:
       language: node_js
       node_js: "6"
       jdk: oraclejdk8
-      script: npm i && npm run tsc && npm run tslint && cd ../demo && tns build ios && tns test ios --justlaunch
+      script: cd src && npm i && npm run tsc &&  cd ../demo && tns run ios && cd ../src && npm run test.ios
     - language: android
       os: linux
       env:
         - Platform="Android 26"
       jdk: oraclejdk8
       before_install: nvm install 6.10.3
-      script: npm i && npm run tsc && npm run tslint && cd ../demo && tns build android && tns test android --justlaunch
+      script: cd src && npm i && npm run tsc &&  cd ../demo && tns run android && cd ../src && npm run test.android
     - stage: "Build"
       env:
         - BuildAndroid="26"
