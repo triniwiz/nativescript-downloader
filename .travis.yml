@@ -32,8 +32,8 @@ matrix:
       node_js: "8"
       jdk: oraclejdk8
       script:
-        - cd src && npm i && npm run tsc && npm run tslint && cd ../demo && tns build ios
-        - travis_wait travis_retry tns test ios --justlaunch
+        - open -b com.apple.iphonesimulator
+        - cd src && npm i && npm run tsc && npm run tslint && cd ../demo && tns build ios && tns test ios --justlaunch
     - language: android
       os: linux
       env:
@@ -55,8 +55,7 @@ matrix:
       jdk: oraclejdk8
       before_install: nvm install --lts
       script:
-        - cd src && npm i && npm run tsc && cd ../demo
-        - travis_wait travis_retry tns build android
+        - cd src && npm i && npm run tsc && cd ../demo && tns build android
     - os: osx
       env:
         - BuildiOS="11"
@@ -66,8 +65,7 @@ matrix:
       node_js: "8"
       jdk: oraclejdk8
       script:
-        - cd src && npm i && npm run tsc && cd ../demo
-        - travis_wait travis_retry tns build ios
+        - cd src && npm i && npm run tsc && cd ../demo && tns build ios
 
 android:
   components:
