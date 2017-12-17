@@ -33,7 +33,8 @@ matrix:
       jdk: oraclejdk8
       script:
         - open -b com.apple.iphonesimulator
-        - cd src && npm i && npm run tsc && npm run tslint && cd ../demo && tns build ios && tns test ios --justlaunch
+        - cd src && npm i && npm run tsc && npm run tslint && cd ../demo && tns build ios
+        - travis_wait travis_retry tns test ios --justlaunch
     - language: android
       os: linux
       env:
