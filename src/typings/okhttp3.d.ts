@@ -42,7 +42,7 @@ declare module okhttp3 {
 		public evictAll(): void;
 		public delete(): void;
 		public isClosed(): boolean;
-		public urls(): java.util.Iterator;
+		public urls(): java.util.Iterator<any>;
 		public networkCount(): number;
 		public requestCount(): number;
 		public flush(): void;
@@ -496,21 +496,21 @@ declare module okhttp3 {
 
 declare module okhttp3 {
 	export class Headers extends java.lang.Object {
-		public value(param0: number): string;
-		public names(): java.util.Set;
-		public newBuilder(): okhttp3.Headers.Builder;
-		public static of(param0: java.util.Map): okhttp3.Headers;
-		public toMultimap(): java.util.Map;
-		public toString(): string;
-		public get(param0: string): string;
-		public name(param0: number): string;
-		public values(param0: string): java.util.List<any>;
-		public size(): number;
-		public hashCode(): number;
-		public getDate(param0: string): java.util.Date;
-		public static of(param0: native.Array<string>): okhttp3.Headers;
-		public equals(param0: java.lang.Object): boolean;
-	}
+           public value(param0: number): string;
+           public names(): java.util.Set<any>;
+           public newBuilder(): okhttp3.Headers.Builder;
+           public static of(param0: java.util.Map<any, any>): okhttp3.Headers;
+           public toMultimap(): java.util.Map<any, any>;
+           public toString(): string;
+           public get(param0: string): string;
+           public name(param0: number): string;
+           public values(param0: string): java.util.List<any>;
+           public size(): number;
+           public hashCode(): number;
+           public getDate(param0: string): java.util.Date;
+           public static of(param0: native.Array<string>): okhttp3.Headers;
+           public equals(param0: java.lang.Object): boolean;
+         }
 	export module Headers {
 		export class Builder extends java.lang.Object {
 			public get(param0: string): string;
@@ -527,7 +527,7 @@ declare module okhttp3 {
 declare module okhttp3 {
 	export class HttpUrl extends java.lang.Object {
 		public static get(param0: java.net.URI): okhttp3.HttpUrl;
-		public queryParameterNames(): java.util.Set;
+		public queryParameterNames(): java.util.Set<any>;
 		public queryParameterName(param0: number): string;
 		public static defaultPort(param0: string): number;
 		public scheme(): string;
@@ -594,7 +594,7 @@ declare module okhttp3 {
 			public build(): okhttp3.HttpUrl;
 		}
 		export module Builder {
-			export class ParseResult extends java.lang.Enum {
+			export class ParseResult extends java.lang.Enum<any> {
 				public static SUCCESS: okhttp3.HttpUrl.Builder.ParseResult;
 				public static MISSING_SCHEME: okhttp3.HttpUrl.Builder.ParseResult;
 				public static UNSUPPORTED_SCHEME: okhttp3.HttpUrl.Builder.ParseResult;
@@ -602,7 +602,7 @@ declare module okhttp3 {
 				public static INVALID_HOST: okhttp3.HttpUrl.Builder.ParseResult;
 				public static values(): native.Array<okhttp3.HttpUrl.Builder.ParseResult>;
 				public static valueOf(param0: string): okhttp3.HttpUrl.Builder.ParseResult;
-				public static valueOf(param0: java.lang.Class, param1: string): java.lang.Enum;
+				public static valueOf(param0: java.lang.Class<any>, param1: string): java.lang.Enum<any>;
 			}
 		}
 	}
@@ -754,14 +754,14 @@ declare module okhttp3 {
 }
 
 declare module okhttp3 {
-	export class Protocol extends java.lang.Enum {
+	export class Protocol extends java.lang.Enum<any> {
 		public static HTTP_1_0: okhttp3.Protocol;
 		public static HTTP_1_1: okhttp3.Protocol;
 		public static SPDY_3: okhttp3.Protocol;
 		public static HTTP_2: okhttp3.Protocol;
 		public static valueOf(param0: string): okhttp3.Protocol;
 		public static get(param0: string): okhttp3.Protocol;
-		public static valueOf(param0: java.lang.Class, param1: string): java.lang.Enum;
+		public static valueOf(param0: java.lang.Class<any>, param1: string): java.lang.Enum<any>;
 		public static values(): native.Array<okhttp3.Protocol>;
 		public toString(): string;
 	}
@@ -928,14 +928,14 @@ declare module okhttp3 {
 }
 
 declare module okhttp3 {
-	export class TlsVersion extends java.lang.Enum {
+	export class TlsVersion extends java.lang.Enum<any> {
 		public static TLS_1_3: okhttp3.TlsVersion;
 		public static TLS_1_2: okhttp3.TlsVersion;
 		public static TLS_1_1: okhttp3.TlsVersion;
 		public static TLS_1_0: okhttp3.TlsVersion;
 		public static SSL_3_0: okhttp3.TlsVersion;
 		public javaName(): string;
-		public static valueOf(param0: java.lang.Class, param1: string): java.lang.Enum;
+		public static valueOf(param0: java.lang.Class<any>, param1: string): java.lang.Enum<any>;
 		public static values(): native.Array<okhttp3.TlsVersion>;
 		public static valueOf(param0: string): okhttp3.TlsVersion;
 		public static forJavaName(param0: string): okhttp3.TlsVersion;
@@ -1039,7 +1039,7 @@ declare module okhttp3 {
 			public static trimSubstring(param0: string, param1: number, param2: number): string;
 			public static closeQuietly(param0: java.net.Socket): void;
 			public static skipTrailingAsciiWhitespace(param0: string, param1: number, param2: number): number;
-			public static intersect(param0: java.lang.Class, param1: native.Array<java.lang.Object>, param2: native.Array<java.lang.Object>): native.Array<java.lang.Object>;
+			public static intersect(param0: java.lang.Class<any>, param1: native.Array<java.lang.Object>, param2: native.Array<java.lang.Object>): native.Array<java.lang.Object>;
 			public static format(param0: string, param1: native.Array<java.lang.Object>): string;
 			public static concat(param0: native.Array<string>, param1: string): native.Array<string>;
 			public static domainToAscii(param0: string): string;
@@ -1120,7 +1120,7 @@ declare module okhttp3 {
 				public close(): void;
 				public isClosed(): boolean;
 				public getDirectory(): java.io.File;
-				public snapshots(): java.util.Iterator;
+				public snapshots(): java.util.Iterator<any>;
 				public static create(param0: okhttp3.internal.io.FileSystem, param1: java.io.File, param2: number, param3: number, param4: number): okhttp3.internal.cache.DiskLruCache;
 				public get(param0: string): okhttp3.internal.cache.DiskLruCache.Snapshot;
 				public size(): number;
@@ -1343,7 +1343,7 @@ declare module okhttp3 {
 				public toString(): string;
 			}
 			export module StreamAllocation {
-				export class StreamAllocationReference extends java.lang.ref.WeakReference {
+				export class StreamAllocationReference extends java.lang.ref.WeakReference<any> {
 					public callStackTrace: java.lang.Object;
 				}
 			}
@@ -1422,7 +1422,7 @@ declare module okhttp3 {
 				public static receiveHeaders(param0: okhttp3.CookieJar, param1: okhttp3.HttpUrl, param2: okhttp3.Headers): void;
 				public static varyHeaders(param0: okhttp3.Response): okhttp3.Headers;
 				public static varyMatches(param0: okhttp3.Response, param1: okhttp3.Headers, param2: okhttp3.Request): boolean;
-				public static varyFields(param0: okhttp3.Headers): java.util.Set;
+				public static varyFields(param0: okhttp3.Headers): java.util.Set<any>;
 				public static skipWhitespace(param0: string, param1: number): number;
 				public static hasVaryAll(param0: okhttp3.Headers): boolean;
 				public static contentLength(param0: okhttp3.Response): number;
@@ -1618,7 +1618,7 @@ declare module okhttp3 {
 declare module okhttp3 {
 	export module internal {
 		export module http2 {
-			export class ErrorCode extends java.lang.Enum {
+			export class ErrorCode extends java.lang.Enum<any> {
 				public static NO_ERROR: okhttp3.internal.http2.ErrorCode;
 				public static PROTOCOL_ERROR: okhttp3.internal.http2.ErrorCode;
 				public static INTERNAL_ERROR: okhttp3.internal.http2.ErrorCode;
@@ -1629,7 +1629,7 @@ declare module okhttp3 {
 				public static valueOf(param0: string): okhttp3.internal.http2.ErrorCode;
 				public static fromHttp2(param0: number): okhttp3.internal.http2.ErrorCode;
 				public static values(): native.Array<okhttp3.internal.http2.ErrorCode>;
-				public static valueOf(param0: java.lang.Class, param1: string): java.lang.Enum;
+				public static valueOf(param0: java.lang.Class<any>, param1: string): java.lang.Enum<any>;
 			}
 		}
 	}
@@ -1991,7 +1991,7 @@ declare module okhttp3 {
 	export module internal {
 		export module platform {
 			export class AndroidPlatform extends okhttp3.internal.platform.Platform {
-				public constructor(param0: java.lang.Class, param1: okhttp3.internal.platform.OptionalMethod, param2: okhttp3.internal.platform.OptionalMethod, param3: okhttp3.internal.platform.OptionalMethod, param4: okhttp3.internal.platform.OptionalMethod);
+				public constructor(param0: java.lang.Class<any>, param1: okhttp3.internal.platform.OptionalMethod, param2: okhttp3.internal.platform.OptionalMethod, param3: okhttp3.internal.platform.OptionalMethod, param4: okhttp3.internal.platform.OptionalMethod);
 				public buildCertificateChainCleaner(param0: javax.net.ssl.X509TrustManager): okhttp3.internal.tls.CertificateChainCleaner;
 				public connectSocket(param0: java.net.Socket, param1: java.net.InetSocketAddress, param2: number): void;
 				public getSelectedProtocol(param0: javax.net.ssl.SSLSocket): string;
@@ -2036,13 +2036,13 @@ declare module okhttp3 {
 	export module internal {
 		export module platform {
 			export class JdkWithJettyBootPlatform extends okhttp3.internal.platform.Platform {
-				public getSelectedProtocol(param0: javax.net.ssl.SSLSocket): string;
-				public afterHandshake(param0: javax.net.ssl.SSLSocket): void;
-				public configureTlsExtensions(param0: javax.net.ssl.SSLSocket, param1: string, param2: java.util.List<any>): void;
-				public constructor(param0: java.lang.reflect.Method, param1: java.lang.reflect.Method, param2: java.lang.reflect.Method, param3: java.lang.Class, param4: java.lang.Class);
-				public static buildIfSupported(): okhttp3.internal.platform.Platform;
-				public constructor();
-			}
+               public getSelectedProtocol(param0: javax.net.ssl.SSLSocket): string;
+               public afterHandshake(param0: javax.net.ssl.SSLSocket): void;
+               public configureTlsExtensions(param0: javax.net.ssl.SSLSocket, param1: string, param2: java.util.List<any>): void;
+               public constructor(param0: java.lang.reflect.Method, param1: java.lang.reflect.Method, param2: java.lang.reflect.Method, param3: java.lang.Class<any>, param4: java.lang.Class<any>);
+               public static buildIfSupported(): okhttp3.internal.platform.Platform;
+               public constructor();
+             }
 			export module JdkWithJettyBootPlatform {
 				export class JettyNegoProvider extends java.lang.Object implements java.lang.reflect.InvocationHandler {
 					public constructor(param0: java.util.List<any>);
@@ -2058,7 +2058,7 @@ declare module okhttp3 {
 		export module platform {
 			export class OptionalMethod extends java.lang.Object {
 				public invoke(param0: java.lang.Object, param1: native.Array<java.lang.Object>): java.lang.Object;
-				public constructor(param0: java.lang.Class, param1: string, param2: native.Array<java.lang.Class>);
+				public constructor(param0: java.lang.Class<any>, param1: string, param2: native.Array<java.lang.Class<any>>);
 				public invokeOptional(param0: java.lang.Object, param1: native.Array<java.lang.Object>): java.lang.Object;
 				public isSupported(param0: java.lang.Object): boolean;
 				public invokeOptionalWithoutCheckedException(param0: java.lang.Object, param1: native.Array<java.lang.Object>): java.lang.Object;
@@ -2756,44 +2756,44 @@ declare module okio {
 		public static sink(param0: java.io.File): okio.Sink;
 		public static blackhole(): okio.Sink;
 		public static source(param0: java.net.Socket): okio.Source;
-		public static sink(param0: java.nio.file.Path, param1: native.Array<java.nio.file.OpenOption>): okio.Sink;
+		public static sink(param0: any /*java.nio.file.Path*/, param1: native.Array<any /*java.nio.file.OpenOption*/>): okio.Sink;
 		public static buffer(param0: okio.Sink): okio.BufferedSink;
 		public static sink(param0: java.net.Socket): okio.Sink;
-		public static source(param0: java.nio.file.Path, param1: native.Array<java.nio.file.OpenOption>): okio.Source;
+		public static source(param0: any /*java.nio.file.Path*/, param1: native.Array<any /*java.nio.file.OpenOption*/>): okio.Source;
 	}
 }
 
 declare module okio {
-	export class Options extends java.util.AbstractList implements java.util.RandomAccess {
-		public removeAll(param0: java.util.Collection): boolean;
+	export class Options extends java.util.AbstractList<any> implements java.util.RandomAccess {
+		public removeAll(param0: java.util.Collection<any>): boolean;
 		public static of(param0: native.Array<okio.ByteString>): okio.Options;
-		public addAll(param0: java.util.Collection): boolean;
+		public addAll(param0: java.util.Collection<any>): boolean;
 		public removeIf(param0: any /* java.util.function.Predicate*/): boolean;
 		public indexOf(param0: java.lang.Object): number;
 		public replaceAll(param0: any /* java.util.function.UnaryOperator*/): void;
 		public add(param0: java.lang.Object): boolean;
 		public remove(param0: java.lang.Object): boolean;
-		public iterator(): java.util.Iterator;
-		public stream(): java.util.stream.Stream;
-		public spliterator(): java.util.Spliterator;
+		public iterator(): java.util.Iterator<any>;
+		public stream(): any /*java.util.stream.Stream*/;
+		public spliterator(): any /*java.util.Spliterator*/;
 		public size(): number;
 		public hashCode(): number;
 		public toArray(): native.Array<java.lang.Object>;
 		public isEmpty(): boolean;
 		public get(param0: number): java.lang.Object;
 		public equals(param0: java.lang.Object): boolean;
-		public listIterator(param0: number): java.util.ListIterator;
+		public listIterator(param0: number): java.util.ListIterator<any>;
 		public toArray(param0: native.Array<java.lang.Object>): native.Array<java.lang.Object>;
-		public addAll(param0: number, param1: java.util.Collection): boolean;
-		public sort(param0: java.util.Comparator): void;
-		public retainAll(param0: java.util.Collection): boolean;
+		public addAll(param0: number, param1: java.util.Collection<any>): boolean;
+		public sort(param0: java.util.Comparator<any>): void;
+		public retainAll(param0: java.util.Collection<any>): boolean;
 		public set(param0: number, param1: java.lang.Object): java.lang.Object;
 		public get(param0: number): okio.ByteString;
 		public contains(param0: java.lang.Object): boolean;
-		public listIterator(): java.util.ListIterator;
-		public parallelStream(): java.util.stream.Stream;
+		public listIterator(): java.util.ListIterator<any>;
+		public parallelStream(): any /*java.util.stream.Stream*/;
 		public add(param0: number, param1: java.lang.Object): void;
-		public containsAll(param0: java.util.Collection): boolean;
+		public containsAll(param0: java.util.Collection<any>): boolean;
 		public lastIndexOf(param0: java.lang.Object): number;
 		public clear(): void;
 		public subList(param0: number, param1: number): java.util.List<any>;
