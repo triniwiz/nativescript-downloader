@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/nativescript-downloader.svg)](https://www.npmjs.com/package/nativescript-downloader)
 [![npm](https://img.shields.io/npm/dt/nativescript-downloader.svg?label=npm%20downloads)](https://www.npmjs.com/package/nativescript-downloader)
-[![Build Status](https://travis-ci.org//triniwiz/nativescript-downlaoder.svg?branch=master)](https://travis-ci.org/triniwiz/nativescript-downloader)
+[![Build Status](https://travis-ci.org/triniwiz/nativescript-downloader.svg?branch=master)](https://travis-ci.org/triniwiz/nativescript-downloader)
 
 ## Installation
 
