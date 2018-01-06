@@ -30,7 +30,7 @@ matrix:
     - stage: "Lint"
       language: node_js
       os: linux
-      node_js: "8"
+      node_js: "6"
       script: cd src && npm run ci.tslint && cd ../demo && npm run ci.tslint
     - stage: "WebPack"
       os: osx
@@ -39,7 +39,7 @@ matrix:
         - Xcode="9.2"
       osx_image: xcode9.2
       language: node_js
-      node_js: "8"
+      node_js: "6"
       jdk: oraclejdk8
       script: cd demo && npm run build.plugin && npm i && tns build ios --bundle --env.uglify
     - language: android
@@ -47,7 +47,7 @@ matrix:
       env:
          - BuildAndroid="26"
       jdk: oraclejdk8
-      before_install: nvm install --lts
+      before_install: nvm install 6.10.3
       script: cd demo && npm run build.plugin && npm i && tns build android --bundle --env.uglify
     - stage: "Tests"
       os: osx
@@ -55,7 +55,7 @@ matrix:
          - iOS="UnitTests"
       osx_image: xcode9.2
       language: node_js
-      node_js: "8"
+      node_js: "6"
       jdk: oraclejdk8
       before_script:
         - ios-sim start --devicetypeid "iPhone-7-Plus, 10.3"
@@ -66,7 +66,7 @@ matrix:
       env:
          - Android="UnitTests"
       jdk: oraclejdk8
-      before_install: nvm install --lts
+      before_install: nvm install stable
       before_script:
         - echo no | android create avd --force -n test -t android-21 -b armeabi-v7a
         - emulator -avd test -no-audio -no-window &
@@ -80,7 +80,7 @@ matrix:
       language: android
       os: linux
       jdk: oraclejdk8
-      before_install: nvm install --lts
+      before_install: nvm install stable
       script:
         - cd src && npm i && npm run tsc && cd ../demo && tns build android
     - os: osx
@@ -89,7 +89,7 @@ matrix:
         - Xcode="9.2"
       osx_image: xcode9.2
       language: node_js
-      node_js: "8"
+      node_js: "6"
       jdk: oraclejdk8
       script:
         - cd src && npm i && npm run tsc && cd ../demo && tns build ios
