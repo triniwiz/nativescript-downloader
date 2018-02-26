@@ -9,7 +9,7 @@ import {
 import * as fs from 'tns-core-modules/file-system';
 import { fromObject } from 'tns-core-modules/data/observable/observable';
 const main_queue = dispatch_get_current_queue();
-declare const AFURLSessionManager, NSURLSessionConfiguration, NSURLRequest;
+// declare const AFURLSessionManager, NSURLSessionConfiguration, NSURLRequest;
 export class Downloader extends DownloaderBase {
   constructor() {
     super();
@@ -56,6 +56,8 @@ export class Downloader extends DownloaderBase {
     }
 
     const ref = new WeakRef(this);
+    let lastRefreshTime = 0;
+    let lastBytesWritten = 0;
     const task = download.downloadTaskWithRequestProgressDestinationCompletionHandler(
       request,
       progress => {
@@ -78,9 +80,36 @@ export class Downloader extends DownloaderBase {
                 }
               }
               const callback = data.callback;
-              if (callback && typeof callback === 'function') {
-                callback(<ProgressEventData>{ value: current });
+              let speed;
+              const currentBytes = task.countOfBytesReceived;
+              const totalBytes = progress.totalUnitCount;
+              let currentTime = Date.now();
+              let minTime = 100;
+
+              if (
+                currentTime - lastRefreshTime >= minTime ||
+                currentBytes === totalBytes
+              ) {
+                let intervalTime = currentTime - lastRefreshTime;
+                if (intervalTime === 0) {
+                  intervalTime += 1;
+                }
+                const updateBytes = currentBytes - lastBytesWritten;
+                speed = Math.floor(Math.round(updateBytes / intervalTime));
+
+                if (callback && typeof callback === 'function') {
+                  callback(<ProgressEventData>{
+                    value: current,
+                    speed: speed,
+                    currentSize: currentBytes,
+                    totalSize: progress.totalUnitCount
+                  });
+                }
+
+                lastRefreshTime = Date.now();
+                lastBytesWritten = currentBytes;
               }
+
             }
           } else if (task.state === NSURLSessionTaskState.Suspended) {
             const data = owner.downloadsData.get(id);

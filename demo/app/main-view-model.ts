@@ -12,13 +12,14 @@ export class HelloWorldModel extends Observable {
   imageDownloaderId: string;
   constructor() {
     super();
+    this.set('fileSpeed', 0);
+    this.set('imageSpeed', 0);
   }
 
   generateDownloads() {
     this.downloadManager = new Downloader();
     this.set('fileProgress', 0);
     this.set('imageProgress', 0);
-
     this.imageDownloaderId = this.downloadManager.createDownload({
       url:
         'https://wallpaperscraft.com/image/hulk_wolverine_x_men_marvel_comics_art_99032_3840x2400.jpg'
@@ -41,6 +42,7 @@ export class HelloWorldModel extends Observable {
     this.downloadManager
       .start(this.fileDownloaderId, (progressData: ProgressEventData) => {
         this.notifyPropertyChange('fileProgress', progressData.value);
+        this.set('fileSpeed', progressData.speed);
       })
       .then(completed => {
         console.log(`File : ${completed.path}`);
@@ -62,6 +64,7 @@ export class HelloWorldModel extends Observable {
     this.downloadManager
       .start(this.imageDownloaderId, (progressData: ProgressEventData) => {
         this.set('imageProgress', progressData.value);
+        this.set('imageSpeed', progressData.speed);
       })
       .then((completed: DownloadEventData) => {
         console.log(`Image : ${completed.path}`);

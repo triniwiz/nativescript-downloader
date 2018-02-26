@@ -46,6 +46,9 @@ export interface DownloadEventData {
 }
 export interface ProgressEventData {
   value: number;
+  currentSize: number;
+  totalSize: number;
+  speed: number;
 }
 
 export enum StatusCode {

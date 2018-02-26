@@ -3,6 +3,18 @@
     xmlns:ui="nativescript-downloader">
     <ScrollView>
         <StackLayout class="p-20">
+            <Label>
+                <FormattedString>
+                    <Span text="File Download Speed "/>
+                    <Span text="{{fileSpeed + 'bytes/s'}}"/>
+                </FormattedString>
+            </Label>
+            <Label>
+                <FormattedString>
+                    <Span text="Image Download Speed "/>
+                    <Span text="{{imageSpeed + 'bytes/s'}}"/>
+                </FormattedString>
+            </Label>
             <StackLayout>
                 <Label text="File Progress"/>
                 <Label text="{{fileProgress}}"/>

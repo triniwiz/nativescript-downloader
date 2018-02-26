@@ -30,6 +30,9 @@ const imageDownloaderId = downloadManager.createDownload({
 downloader
   .start(imageDownloaderId, (progressData: ProgressEventData) => {
     console.log(`Progress : ${progressData.value}%`);
+    console.log(`Current Size : ${progressData.currentSize}%`);
+    console.log(`Total Size : ${progressData.totalSize}%`);
+    console.log(`Download Speed in bytes : ${progressData.speed}%`);
   })
   .then((completed: DownloadEventData) => {
     console.log(`Image : ${completed.path}`);

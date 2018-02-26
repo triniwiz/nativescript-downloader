@@ -134,7 +134,10 @@ export class Downloader extends DownloaderBase {
                     }
                     if (callback && typeof callback === 'function') {
                       callback(<ProgressEventData>{
-                        value: current
+                        value: current,
+                        speed: speed,
+                        currentSize: currentBytes,
+                        totalSize : totalBytes
                       });
                     }
                   }
