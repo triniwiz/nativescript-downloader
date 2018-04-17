@@ -3,16 +3,12 @@ android:
   components:
     - tools
     - platform-tools
-    - build-tools-26.0.1
+    - build-tools-26.0.2
     - android-26
     - android-23
     - android-21
     - extra-android-m2repository
     - sys-img-armeabi-v7a-android-21
-  licenses:
-    - 'android-sdk-preview-license-.+'
-    - 'android-sdk-license-.+'
-    - 'google-gdk-license-.+'
 
 install:
     - echo no | npm install -g nativescript
