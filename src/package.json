@@ -1,13 +1,13 @@
 {
   "name": "nativescript-downloader",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "Download Manager for NativeScript",
   "main": "downloader",
   "typings": "index.d.ts",
   "nativescript": {
     "platforms": {
-      "android": "3.0.0",
-      "ios": "3.0.0"
+      "android": "4.0.0",
+      "ios": "4.0.1"
     }
   },
   "scripts": {
@@ -46,10 +46,10 @@
   "devDependencies": {
     "prompt": "^1.0.0",
     "rimraf": "^2.5.0",
-    "tns-core-modules": "^3.1.0",
-    "tns-platform-declarations": "^3.1.0",
+    "tns-core-modules": "^4.0.0",
+    "tns-platform-declarations": "^4.0.0",
     "tslint": "^5.0.0",
-    "typescript": "~2.4.0"
+    "typescript": "~2.6.0"
   },
   "repository": {
     "type": "git",

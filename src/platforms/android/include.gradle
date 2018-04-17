@@ -1,10 +1,3 @@
-android {
-    productFlavors {
-        "nativescript-downloader" {
-            dimension "nativescript-downloader"
-        }
-    }
-}
 repositories {
     maven {
         url 'https://maven.google.com'

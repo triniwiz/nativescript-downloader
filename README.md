@@ -6,9 +6,13 @@
 
 ## Installation
 
-```bash
-tns plugin add nativescript-downloader
-```
+#### NativeScript 4x
+
+* `tns plugin add nativescript-downloader`
+
+#### NativeScript 3x
+
+* `tns plugin add nativescript-downloader@1.1.0`
 
 ## Usage
 
