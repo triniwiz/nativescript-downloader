@@ -18,15 +18,16 @@
 
 ### TypeScript
 
-```ts
+```typescript
 import { Downloader } from 'nativescript-downloader';
 Downloader.init(); // <= Try calling this after the app launches to start the downloader service
+Downloader.setTimeout(120); //Increase timeout default 60s
 ```
 
-```ts
-import { Downloader } from 'nativescript-downloader';
+```typescript
+import { Downloader, ProgressEventData, DownloadEventData } from 'nativescript-downloader';
 const downloader = new Downloader();
-const imageDownloaderId = downloadManager.createDownload({
+const imageDownloaderId = Downloader.createDownload({
   url:
     'https://wallpaperscraft.com/image/hulk_wolverine_x_men_marvel_comics_art_99032_3840x2400.jpg'
 });
@@ -51,6 +52,7 @@ downloader
 ```js
 var Downloader = require('nativescript-downloader').Downloader;
 Downloader.Downloader.init(); // <= Try calling this after the app launches to start the downloader service
+Downloader.setTimeout(120); //Increase timeout default 60s
 ```
 
 ```js

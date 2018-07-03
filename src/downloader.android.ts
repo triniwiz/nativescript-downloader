@@ -29,6 +29,12 @@ export class Downloader extends DownloaderBase {
   public static init() {
     co.fitcom.fancydownloader.Manager.init(utils.ad.getApplicationContext());
   }
+
+  public static  setTimeout(timeout: number){
+    const manager = co.fitcom.fancydownloader.Manager.getInstance() as any;
+    manager.setTimeout(timeout);
+  }
+
   public createDownload(options: DownloadOptions): string {
     if (options && !options.url) throw new Error('Url missing');
     const taskId = generateId();

@@ -7,7 +7,6 @@ import {
   generateId
 } from './downloader.common';
 import * as fs from 'tns-core-modules/file-system';
-import { fromObject } from 'tns-core-modules/data/observable/observable';
 const main_queue = dispatch_get_current_queue();
 // declare const AFURLSessionManager, NSURLSessionConfiguration, NSURLRequest;
 export class Downloader extends DownloaderBase {
@@ -16,11 +15,20 @@ export class Downloader extends DownloaderBase {
     this.downloads = new Map();
     this.downloadsData = new Map();
   }
-  public static init() {}
+    private static timeout = 60;
+
+    public static init() {}
+
+  public static setTimeout(timeout:number){
+    Downloader.timeout = timeout
+  }
+
   public createDownload(options: DownloadOptions): string {
     if (options && !options.url) throw new Error('Url missing');
     const id = generateId();
     const configuration = NSURLSessionConfiguration.defaultSessionConfiguration;
+    configuration.timeoutIntervalForRequest = Downloader.timeout;
+    configuration.timeoutIntervalForResource = Downloader.timeout;
     const download = AFURLSessionManager.alloc().initWithSessionConfiguration(
       configuration
     );
