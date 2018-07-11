@@ -5,7 +5,7 @@ import {
   DownloadEventData,
   DownloadEventError
 } from 'nativescript-downloader';
-import * as frame from 'tns-core-modules/ui/frame';
+import * as fs from 'tns-core-modules/file-system';
 export class HelloWorldModel extends Observable {
   public downloadManager: Downloader;
   fileDownloaderId: string;
@@ -14,6 +14,7 @@ export class HelloWorldModel extends Observable {
     super();
     this.set('fileSpeed', 0);
     this.set('imageSpeed', 0);
+    this.set('image', fs.knownFolders.documents().path + 'beach.jpg');
   }
 
   generateDownloads() {
@@ -21,8 +22,10 @@ export class HelloWorldModel extends Observable {
     this.set('fileProgress', 0);
     this.set('imageProgress', 0);
     this.imageDownloaderId = this.downloadManager.createDownload({
+        path: fs.knownFolders.documents().path,
+        fileName: 'beach.jpg',
       url:
-        'https://wallpaperscraft.com/image/hulk_wolverine_x_men_marvel_comics_art_99032_3840x2400.jpg'
+        'https://images.unsplash.com/photo-1530559423894-148fad85faf7?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=srgb&dl=daria-kopylova-723534-unsplash.jpg&s=46720eb1ac5a8e23d6ee46e73b64246e'
     });
     console.log(`Image Id :${this.imageDownloaderId} `);
 

@@ -19,14 +19,14 @@ export class Downloader extends DownloaderBase {
 
     public static init() {}
 
-  public static setTimeout(timeout:number){
-    Downloader.timeout = timeout
+  public static setTimeout(timeout: number ) {
+    Downloader.timeout = timeout;
   }
 
   public createDownload(options: DownloadOptions): string {
     if (options && !options.url) throw new Error('Url missing');
     const id = generateId();
-    const configuration = NSURLSessionConfiguration.defaultSessionConfiguration;
+    const configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier("NSDownloader");
     configuration.timeoutIntervalForRequest = Downloader.timeout;
     configuration.timeoutIntervalForResource = Downloader.timeout;
     const download = AFURLSessionManager.alloc().initWithSessionConfiguration(
@@ -51,7 +51,6 @@ export class Downloader extends DownloaderBase {
     }
 
     const request = NSURLRequest.requestWithURL(NSURL.URLWithString(url));
-
     let path = '';
     if (options.path && options.fileName) {
       path = fs.path.join(options.path, options.fileName);
@@ -66,6 +65,7 @@ export class Downloader extends DownloaderBase {
     const ref = new WeakRef(this);
     let lastRefreshTime = 0;
     let lastBytesWritten = 0;
+
     const task = download.downloadTaskWithRequestProgressDestinationCompletionHandler(
       request,
       progress => {

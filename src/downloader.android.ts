@@ -30,7 +30,7 @@ export class Downloader extends DownloaderBase {
     co.fitcom.fancydownloader.Manager.init(utils.ad.getApplicationContext());
   }
 
-  public static  setTimeout(timeout: number){
+  public static  setTimeout(timeout: number ) {
     const manager = co.fitcom.fancydownloader.Manager.getInstance() as any;
     manager.setTimeout(timeout);
   }
