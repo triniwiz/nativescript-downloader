@@ -8,7 +8,7 @@ import {
 } from './downloader.common';
 import * as fs from 'tns-core-modules/file-system';
 const main_queue = dispatch_get_current_queue();
-// declare const AFURLSessionManager, NSURLSessionConfiguration, NSURLRequest;
+declare const AFURLSessionManager, NSURLSessionConfiguration, NSURLRequest;
 export class Downloader extends DownloaderBase {
   constructor() {
     super();
