@@ -2,7 +2,7 @@
   "nativescript": {
     "id": "org.nativescript.demo",
     "tns-android": {
-      "version": "4.0.0"
+      "version": "5.0.0-rc-2018-10-18-172901-01"
     },
     "tns-ios": {
       "version": "4.0.1"
@@ -39,7 +39,8 @@
     "webpack-bundle-analyzer": "^2.8.2",
     "webpack-sources": "~1.0.1",
     "css-loader": "~0.28.7",
-    "nativescript-worker-loader": "~0.8.1"
+    "nativescript-worker-loader": "~0.8.1",
+    "uglifyjs-webpack-plugin": "~1.1.6"
   },
   "scripts": {
     "tsc": "tsc -skipLibCheck",

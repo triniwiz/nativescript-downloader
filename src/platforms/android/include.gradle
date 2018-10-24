@@ -5,5 +5,7 @@ repositories {
 }
 
 dependencies {
-    compile 'co.fitcom:fancydownloader:0.+'
+    implementation ('co.fitcom:fancydownloader:0.+'){
+        exclude group: "com.android.support"
+    }
 }
