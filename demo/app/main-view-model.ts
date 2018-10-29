@@ -22,8 +22,8 @@ export class HelloWorldModel extends Observable {
     this.set('fileProgress', 0);
     this.set('imageProgress', 0);
     this.imageDownloaderId = this.downloadManager.createDownload({
-        path: fs.knownFolders.documents().path,
-        fileName: 'beach.jpg',
+      path: fs.knownFolders.documents().path,
+      fileName: 'beach.jpg',
       url:
         'https://images.unsplash.com/photo-1530559423894-148fad85faf7?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=srgb&dl=daria-kopylova-723534-unsplash.jpg&s=46720eb1ac5a8e23d6ee46e73b64246e'
     });
@@ -44,7 +44,7 @@ export class HelloWorldModel extends Observable {
   downloadFile() {
     this.downloadManager
       .start(this.fileDownloaderId, (progressData: ProgressEventData) => {
-        this.notifyPropertyChange('fileProgress', progressData.value);
+        this.set('fileProgress', progressData.value);
         this.set('fileSpeed', progressData.speed);
       })
       .then(completed => {
