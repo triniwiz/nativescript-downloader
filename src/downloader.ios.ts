@@ -26,13 +26,14 @@ export class Downloader extends DownloaderBase {
   public createDownload(options: DownloadOptions): string {
     if (options && !options.url) throw new Error('Url missing');
     const id = generateId();
-    const configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier("NSDownloader");
+    // TODO
+    // NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier("NSDownloader");
+    const configuration = NSURLSessionConfiguration.defaultSessionConfiguration;
     configuration.timeoutIntervalForRequest = Downloader.timeout;
     configuration.timeoutIntervalForResource = Downloader.timeout;
     const download = AFURLSessionManager.alloc().initWithSessionConfiguration(
       configuration
     );
-
     let url;
     let query;
     if (options.query) {
@@ -167,7 +168,6 @@ export class Downloader extends DownloaderBase {
       }
     );
     this.downloads.set(id, task);
-
     this.downloadsData.set(id, {
       status: StatusCode.PENDING,
       path: path
