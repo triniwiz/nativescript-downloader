@@ -1,5 +1,4 @@
-<Page
-    xmlns="http://schemas.nativescript.org/tns.xsd" loaded="pageLoaded" class="page"
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" loaded="pageLoaded" class="page"
     xmlns:ui="nativescript-downloader">
     <ScrollView>
         <StackLayout class="p-20">
@@ -15,14 +14,15 @@
                     <Span text="{{imageSpeed + 'bytes/s'}}"/>
                 </FormattedString>
             </Label>
-            <StackLayout>
-                <Label text="File Progress"/>
-                <Label text="{{fileProgress}}"/>
-            </StackLayout>
+
+            <Label text="File Progress"/>
+            <Label text="{{fileProgress}}"/>
             <Progress value="{{fileProgress}}"/>
+
             <Label text="Image Progress"/>
             <Label text="{{imageProgress}}"/>
             <Progress value="{{imageProgress}}"/>
+
             <Image height="40%" src="{{ image }}"/>
             <Button text="Generate Downloads" tap="{{ generateDownloads }}"/>
             <Button text="Generate and Start Downloads" tap="{{ generateAndStart }}"/>
