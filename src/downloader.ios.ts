@@ -15,11 +15,11 @@ export class Downloader extends DownloaderBase {
     this.downloads = new Map();
     this.downloadsData = new Map();
   }
-    private static timeout = 60;
+  private static timeout = 60;
 
-    public static init() {}
+  public static init() {}
 
-  public static setTimeout(timeout: number ) {
+  public static setTimeout(timeout: number) {
     Downloader.timeout = timeout;
   }
 
@@ -51,7 +51,9 @@ export class Downloader extends DownloaderBase {
       url = options.url;
     }
 
-    const request = NSURLRequest.requestWithURL(NSURL.URLWithString(url));
+    const request = NSMutableURLRequest.requestWithURL(
+      NSURL.URLWithString(url)
+    );
     let path = '';
     if (options.path && options.fileName) {
       path = fs.path.join(options.path, options.fileName);
@@ -61,6 +63,15 @@ export class Downloader extends DownloaderBase {
       path = fs.path.join(options.path, `${generateId()}`);
     } else {
       path = fs.path.join(fs.knownFolders.temp().path, `${generateId()}`);
+    }
+
+    if (options.headers) {
+      for (const header in options.headers) {
+        request.setValueForHTTPHeaderField(
+          options.headers[header] + '',
+          header
+        );
+      }
     }
 
     const ref = new WeakRef(this);
@@ -118,7 +129,6 @@ export class Downloader extends DownloaderBase {
                 lastRefreshTime = Date.now();
                 lastBytesWritten = currentBytes;
               }
-
             }
           } else if (task.state === NSURLSessionTaskState.Suspended) {
             const data = owner.downloadsData.get(id);
