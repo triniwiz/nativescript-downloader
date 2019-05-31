@@ -30,7 +30,7 @@ export class HelloWorldModel extends Observable {
     console.log(`Image Id :${this.imageDownloaderId} `);
 
     this.fileDownloaderId = this.downloadManager.createDownload({
-      url: 'http://ipv4.download.thinkbroadband.com/50MB.zip'
+      url: 'https://cartographicperspectives.org/index.php/journal/article/download/cp43-complete-issue/pdf/'
     });
     console.log(`File Id :${this.fileDownloaderId} `);
   }

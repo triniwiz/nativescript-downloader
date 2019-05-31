@@ -7,8 +7,10 @@
         "noLib": false,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "lib": ["es6", "dom"],
-        "sourceMap": true,
+        "lib": [
+            "es6",
+            "dom"
+        ],
         "pretty": true,
         "allowUnreachableCode": false,
         "allowUnusedLabels": false,
@@ -17,7 +19,13 @@
         "noImplicitAny": false,
         "noImplicitReturns": true,
         "noImplicitUseStrict": false,
-        "noFallthroughCasesInSwitch": true
+        "noFallthroughCasesInSwitch": true,
+        "baseUrl": ".",
+        "paths": {
+            "~/*": [
+                "app/*"
+            ]
+        }
     },
     "exclude": [
         "node_modules"
