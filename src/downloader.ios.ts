@@ -91,12 +91,7 @@ export class Downloader extends DownloaderBase {
               const data = owner.downloadsData.get(id);
               if (data) {
                 if (data.status && data.status !== StatusCode.DOWNLOADING) {
-                  owner.downloadsData.set(
-                    id,
-                    Object.assign({}, data, {
-                      status: StatusCode.DOWNLOADING
-                    })
-                  );
+                  owner.downloadsData.set(id, { ...data, status: StatusCode.DOWNLOADING });
                 }
               }
               const callback = data.callback;
@@ -133,12 +128,7 @@ export class Downloader extends DownloaderBase {
           } else if (task.state === NSURLSessionTaskState.Suspended) {
             const data = owner.downloadsData.get(id);
             if (data) {
-              owner.downloadsData.set(
-                id,
-                Object.assign({}, data, {
-                  status: StatusCode.PAUSED
-                })
-              );
+              owner.downloadsData.set(id, { ...data, status: StatusCode.PAUSED });
             }
           }
         });
@@ -149,39 +139,33 @@ export class Downloader extends DownloaderBase {
       },
       (response, filePath, error) => {
         const owner = ref.get();
+
+        if (!owner.downloadsData.has(id)) {
+          return;
+        }
+
         if (error) {
-          if (owner.downloadsData.has(id)) {
-            const data = owner.downloadsData.get(id);
-            const reject = data.reject;
-            reject({
-              status: StatusCode.ERROR,
-              message: error.localizedDescription
-            });
-          }
-        } else {
-          if (
-            task &&
-            task.state === NSURLSessionTaskState.Completed &&
-            !task.error
-          ) {
-            if (owner.downloadsData.has(id)) {
-              const data = owner.downloadsData.get(id);
-              const resolve = data.resolve;
-              resolve(<DownloadEventData>{
-                status: StatusCode.COMPLETED,
-                message: null,
-                path: data.path
-              });
-            }
-          }
+          const data = owner.downloadsData.get(id);
+          const reject = data.reject;
+          reject({
+            status: StatusCode.ERROR,
+            message: error.localizedDescription
+          });
+        } else if (task && task.state === NSURLSessionTaskState.Completed && !task.error) {
+          const data = owner.downloadsData.get(id);
+          const resolve = data.resolve;
+          resolve(<DownloadEventData>{
+            status: StatusCode.COMPLETED,
+            message: null,
+            path: data.path
+          });
         }
       }
     );
+    
     this.downloads.set(id, task);
-    this.downloadsData.set(id, {
-      status: StatusCode.PENDING,
-      path: path
-    });
+    this.downloadsData.set(id, { status: StatusCode.PENDING, path: path });
+
     return id;
   }
 
@@ -189,15 +173,14 @@ export class Downloader extends DownloaderBase {
     return new Promise((resolve, reject) => {
       if (id && this.downloads.has(id)) {
         const data = this.downloadsData.get(id);
-        this.downloadsData.set(
-          id,
-          Object.assign({}, data, {
-            reject: reject,
-            resolve: resolve,
-            callback: progress
-          })
-        );
-        const task = this.downloads.get(id);
+        this.downloadsData.set(id, {
+          ...data,
+          reject: reject,
+          resolve: resolve,
+          callback: progress
+        });
+
+        const task = this.getDownloadTask(id);
         if (task) {
           task.state = NSURLSessionTaskState.Running; // Manually updating task state.
           task.resume();
@@ -217,41 +200,31 @@ export class Downloader extends DownloaderBase {
   }
 
   public pause(id: string) {
-    if (id && this.downloads.has(id)) {
-      const task = this.downloads.get(id);
-      if (task) {
-        task.state = NSURLSessionTaskState.Suspended; // Manually updating task state.
-        task.suspend();
-        const data = this.downloadsData.get(id);
-        if (data) {
-          this.downloadsData.set(
-            id,
-            Object.assign({}, data, {
-              status: StatusCode.PAUSED
-            })
-          );
-        }
+    const task = this.getDownloadTask(id);
+    if (task) {
+      task.state = NSURLSessionTaskState.Suspended; // Manually updating task state.
+      task.suspend();
+
+      const data = this.downloadsData.get(id);
+      if (data) {
+        this.downloadsData.set(id, {...data, status: StatusCode.PAUSED });
       }
     }
   }
 
   public resume(id: string): void {
-    if (id && this.downloads.has(id)) {
-      const task = this.downloads.get(id);
-      if (task) {
-        task.state = NSURLSessionTaskState.Running; // Manually updating task state.
-        task.resume();
-      }
+    const task = this.getDownloadTask(id);
+    if (task) {
+      task.state = NSURLSessionTaskState.Running; // Manually updating task state.
+      task.resume();
     }
   }
 
   public cancel(id: string): void {
-    if (id && this.downloads.has(id)) {
-      const task = this.downloads.get(id);
-      if (task) {
-        task.state = NSURLSessionTaskState.Canceling; // Manually updating task state.
-        task.cancel();
-      }
+    const task = this.getDownloadTask(id);
+    if (task) {
+      task.state = NSURLSessionTaskState.Canceling; // Manually updating task state.
+      task.cancel();
     }
   }
 
@@ -264,5 +237,13 @@ export class Downloader extends DownloaderBase {
       return null;
     }
     return null;
+  }
+
+  /**
+   * Returns a reference to the download task for the given ID or a falsy value if there is no matching download.
+   * @param id ID for the download task.
+   */
+  private getDownloadTask(id: string) {
+    return id && this.downloads.has(id) && this.downloads.get(id);
   }
 }
