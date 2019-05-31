@@ -199,6 +199,7 @@ export class Downloader extends DownloaderBase {
         );
         const task = this.downloads.get(id);
         if (task) {
+          task.state = NSURLSessionTaskState.Running; // Manually updating task state.
           task.resume();
         }
       } else {
@@ -219,6 +220,7 @@ export class Downloader extends DownloaderBase {
     if (id && this.downloads.has(id)) {
       const task = this.downloads.get(id);
       if (task) {
+        task.state = NSURLSessionTaskState.Suspended; // Manually updating task state.
         task.suspend();
         const data = this.downloadsData.get(id);
         if (data) {
@@ -237,6 +239,7 @@ export class Downloader extends DownloaderBase {
     if (id && this.downloads.has(id)) {
       const task = this.downloads.get(id);
       if (task) {
+        task.state = NSURLSessionTaskState.Running; // Manually updating task state.
         task.resume();
       }
     }
@@ -246,6 +249,7 @@ export class Downloader extends DownloaderBase {
     if (id && this.downloads.has(id)) {
       const task = this.downloads.get(id);
       if (task) {
+        task.state = NSURLSessionTaskState.Canceling; // Manually updating task state.
         task.cancel();
       }
     }
