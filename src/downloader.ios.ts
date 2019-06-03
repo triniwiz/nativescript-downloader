@@ -162,7 +162,7 @@ export class Downloader extends DownloaderBase {
         }
       }
     );
-    
+
     this.downloads.set(id, task);
     this.downloadsData.set(id, { status: StatusCode.PENDING, path: path });
 
