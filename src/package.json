@@ -1,6 +1,6 @@
 {
   "name": "nativescript-downloader",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "description": "Download Manager for NativeScript",
   "main": "downloader",
   "typings": "index.d.ts",

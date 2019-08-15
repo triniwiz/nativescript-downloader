@@ -10,6 +10,7 @@ import * as fs from 'tns-core-modules/file-system';
 const main_queue = dispatch_get_current_queue();
 declare const AFURLSessionManager, NSURLSessionConfiguration, NSURLRequest;
 export class Downloader extends DownloaderBase {
+  tasksReader = new NativePropertyReader();
   constructor() {
     super();
     this.downloads = new Map();
@@ -83,7 +84,8 @@ export class Downloader extends DownloaderBase {
       progress => {
         dispatch_async(main_queue, () => {
           const owner = ref.get();
-          if (task && task.state === NSURLSessionTaskState.Running) {
+          const state = this.tasksReader.readProp(task, "state", interop.types.int32);
+          if (state === NSURLSessionTaskState.Running) {
             const current = Math.floor(
               Math.round(progress.fractionCompleted * 100)
             );
@@ -130,7 +132,7 @@ export class Downloader extends DownloaderBase {
                 lastBytesWritten = currentBytes;
               }
             }
-          } else if (task.state === NSURLSessionTaskState.Suspended) {
+          } else if (state === NSURLSessionTaskState.Suspended) {
             const data = owner.downloadsData.get(id);
             if (data) {
               owner.downloadsData.set(
@@ -159,9 +161,9 @@ export class Downloader extends DownloaderBase {
             });
           }
         } else {
+          const state = this.tasksReader.readProp(task, "state", interop.types.int32);
           if (
-            task &&
-            task.state === NSURLSessionTaskState.Completed &&
+            state === NSURLSessionTaskState.Completed &&
             !task.error
           ) {
             if (owner.downloadsData.has(id)) {
@@ -260,5 +262,34 @@ export class Downloader extends DownloaderBase {
       return null;
     }
     return null;
+  }
+}
+
+
+
+class NativePropertyReader {
+  private _invocationCache = new Map<string, NSInvocation>();
+
+  private getInvocationObject(object: NSObject, selector: string): NSInvocation {
+      let invocation = this._invocationCache.get(selector);
+      if (!invocation) {
+          const sig = object.methodSignatureForSelector(selector);
+          invocation = NSInvocation.invocationWithMethodSignature(sig);
+          invocation.selector = selector;
+
+          this._invocationCache[selector] = invocation;
+      }
+
+      return invocation;
+  }
+
+  public readProp<T>(object: NSObject, prop: string, type: interop.Type<T>): T {
+      const invocation = this.getInvocationObject(object, prop);
+      invocation.invokeWithTarget(object);
+
+      const ret = new interop.Reference<T>(type, new interop.Pointer());
+      invocation.getReturnValue(ret);
+
+      return ret.value;
   }
 }
