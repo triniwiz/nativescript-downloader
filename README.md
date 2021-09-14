@@ -6,6 +6,11 @@
 
 ## Installation
 
+### [NativeScript 7.0+](https://github.com/triniwiz/nativescript-plugins)
+
+* `ns plugin add @triniwiz/nativescript-downloader`
+
+
 #### NativeScript 4x
 
 * `tns plugin add nativescript-downloader`
